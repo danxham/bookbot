@@ -3,10 +3,27 @@ def main():
     text = get_book_path(book_path)
     word_count = count_words(text)
     character_count = count_characters(text)
-    print(text)
-    print(word_count)
-    print(character_count)
+    character_sorted_list = chars_dict_to_sorted_list(character_count)
+    
+    print(f"--- Begin report of {book_path} ---")
+    print(f"{word_count} words found in document")
 
+    for item in character_sorted_list:
+        if not item["char"].isalpha():
+            continue
+        print(f"The '{item['char']}' character was found {item['num']} times")
+    
+    print("--- End report ---")
+
+def sort_on(d):
+    return d["num"]
+
+def chars_dict_to_sorted_list(num_characters_dict):
+    sorted_list = []
+    for ch in num_characters_dict:
+        sorted_list.append({"char": ch, "num": num_characters_dict[ch]})
+    sorted_list.sort(reverse=True, key =sort_on)
+    return sorted_list
 
 def get_book_path(path):
     with open(path) as f:
